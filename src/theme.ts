@@ -6,6 +6,9 @@ const theme = createTheme({
       main: "#3f51b5",
     },
   },
+  typography: {
+    fontFamily: '"Poppins", sans-serif',
+  },
 });
 
 export default theme;
