@@ -66,8 +66,21 @@ export const ForgotPasswordBox = styled(Box)({
 export const SignInButton = styled(Button)({
   paddingTop: 10,
   paddingBottom: 10,
-  borderRadius: 8,
+  borderRadius: 6,
   textTransform: "none",
+  fontSize: 15,
   fontWeight: 600,
-  boxShadow: "0 8px 20px -6px rgba(63, 81, 181, 0.5)",
+  lineHeight: 1.5,
+  letterSpacing: 0.2,
+  color: "#ffffff",
+  background: "#3f51b5",
+
+  "&:hover": {
+    background: "#334296",
+  },
+
+  "&.Mui-disabled": {
+    color: "rgba(255, 255, 255, 0.7)",
+    background: "#9aa2d8",
+  },
 });
