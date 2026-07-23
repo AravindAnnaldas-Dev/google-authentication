@@ -1,9 +1,9 @@
 import app from "./axios";
 
 export type User = {
-  id: number;
   username: string;
   email: string;
+  provider: string;
 };
 
 type UsersListResponse = {

@@ -164,12 +164,12 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                   <TableRow>
                     <TableCell>User</TableCell>
                     <TableCell>Email</TableCell>
-                    <TableCell align="right">ID</TableCell>
+                    <TableCell align="right">Provider Type</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {users?.map((user) => (
-                    <TableRow key={user.id} hover>
+                  {users?.map((user, index) => (
+                    <TableRow key={index} hover>
                       <TableCell>
                         <Box
                           sx={{
@@ -191,7 +191,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                       </TableCell>
                       <TableCell align="right">
                         <Typography variant="body2" color="text.secondary">
-                          #{user.id}
+                          {user.provider}
                         </Typography>
                       </TableCell>
                     </TableRow>
