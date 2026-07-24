@@ -6,13 +6,21 @@ import {
   Alert,
   CircularProgress,
   Box,
+  Fade,
+  Grow,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import ShieldRoundedIcon from "@mui/icons-material/ShieldRounded";
 import { GoogleLogin, type CredentialResponse } from "@react-oauth/google";
 import { useFormik } from "formik";
 import Cookies from "js-cookie";
 import {
   PageContainer,
+  SplitWrapper,
+  BrandPanel,
+  BrandMark,
+  BrandLogoDot,
+  FormPanel,
   CardPaper,
   HeaderBox,
   LockAvatar,
@@ -128,26 +136,50 @@ export default function AuthCard({
 
   return (
     <PageContainer>
-      <CardPaper elevation={0}>
-        <HeaderBox>
-          <LockAvatar>
-            <LockOutlinedIcon />
-          </LockAvatar>
-          <Typography variant="h5" sx={{ fontWeight: 700 }} gutterBottom>
-            {isSignUp ? "Create an account" : "Welcome back"}
-          </Typography>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ textAlign: "center" }}
-          >
-            {isSignUp
-              ? "Sign up to get started"
-              : "Sign in to continue to your dashboard"}
-          </Typography>
-        </HeaderBox>
+      <Grow in timeout={450}>
+        <SplitWrapper>
+          <BrandPanel>
+            <BrandMark>
+              <BrandLogoDot>
+                <ShieldRoundedIcon fontSize="small" />
+              </BrandLogoDot>
+              Auralock
+            </BrandMark>
+            <Box sx={{ position: "relative", zIndex: 1 }}>
+              <Typography
+                variant="h4"
+                sx={{ fontWeight: 700, letterSpacing: "-0.02em", mb: 1.5 }}
+              >
+                Secure access, built for teams.
+              </Typography>
+              <Typography sx={{ opacity: 0.85, maxWidth: 320 }}>
+                Sign in to manage your users, monitor activity, and keep your
+                workspace protected.
+              </Typography>
+            </Box>
+            <Typography variant="caption" sx={{ opacity: 0.6, zIndex: 1 }}>
+              © {new Date().getFullYear()} Auralock. All rights reserved.
+            </Typography>
+          </BrandPanel>
 
-        {errorMessage && (
+          <FormPanel>
+            <Fade in timeout={500}>
+              <CardPaper elevation={0}>
+                <HeaderBox>
+                  <LockAvatar>
+                    <LockOutlinedIcon />
+                  </LockAvatar>
+                  <Typography variant="h5" sx={{ fontWeight: 700 }} gutterBottom>
+                    {isSignUp ? "Create an account" : "Welcome back"}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {isSignUp
+                      ? "Sign up to get started"
+                      : "Sign in to continue to your dashboard"}
+                  </Typography>
+                </HeaderBox>
+
+                {errorMessage && (
           <Alert severity="error" sx={{ mb: 2 }}>
             {errorMessage}
           </Alert>
@@ -275,7 +307,11 @@ export default function AuthCard({
             </Typography>
           )
         )}
-      </CardPaper>
+              </CardPaper>
+            </Fade>
+          </FormPanel>
+        </SplitWrapper>
+      </Grow>
     </PageContainer>
   );
 }

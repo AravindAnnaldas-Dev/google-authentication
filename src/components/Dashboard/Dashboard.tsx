@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  Fade,
   IconButton,
   Table,
   TableBody,
@@ -18,12 +19,14 @@ import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
 import VerifiedUserRoundedIcon from "@mui/icons-material/VerifiedUserRounded";
 import PersonAddAltRoundedIcon from "@mui/icons-material/PersonAddAltRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import TrendingUpRoundedIcon from "@mui/icons-material/TrendingUpRounded";
 import Cookies from "js-cookie";
 import { useUsersList } from "../../hooks/useUsersList";
 import {
   ACCESS_TOKEN_COOKIE,
   REFRESH_TOKEN_COOKIE,
 } from "../../constants/cookies";
+import { INDIGO } from "../../theme";
 import {
   PageWrapper,
   TopBar,
@@ -31,6 +34,7 @@ import {
   StatGrid,
   StatCard,
   StatIconBadge,
+  StatTrend,
   TableCard,
   UserAvatar,
 } from "./Dashboard.styles";
@@ -62,7 +66,14 @@ export default function Dashboard({ onLogout }: DashboardProps) {
     <PageWrapper>
       <TopBar>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-          <Avatar sx={{ bgcolor: "#3f51b5", width: 36, height: 36 }}>
+          <Avatar
+            sx={{
+              bgcolor: INDIGO[600],
+              width: 36,
+              height: 36,
+              borderRadius: "10px",
+            }}
+          >
             <LockOutlinedIcon fontSize="small" />
           </Avatar>
           <Typography variant="h6" sx={{ fontWeight: 700 }}>
@@ -85,49 +96,63 @@ export default function Dashboard({ onLogout }: DashboardProps) {
           Here's what's happening with your users today.
         </Typography>
 
-        <StatGrid>
-          <StatCard elevation={0}>
-            <StatIconBadge bg="#3f51b5">
-              <PeopleAltRoundedIcon />
-            </StatIconBadge>
-            <Box>
-              <Typography variant="h5" sx={{ fontWeight: 700 }}>
-                {isLoading ? "—" : totalUsers}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Total users
-              </Typography>
-            </Box>
-          </StatCard>
+        <Fade in timeout={400}>
+          <StatGrid>
+            <StatCard elevation={0}>
+              <StatIconBadge bg={INDIGO[600]}>
+                <PeopleAltRoundedIcon />
+              </StatIconBadge>
+              <Box>
+                <Typography variant="h5" sx={{ fontWeight: 700 }}>
+                  {isLoading ? "—" : totalUsers}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Total users
+                </Typography>
+                <StatTrend positive sx={{ mt: 0.5 }}>
+                  <TrendingUpRoundedIcon sx={{ fontSize: 14 }} />
+                  Live
+                </StatTrend>
+              </Box>
+            </StatCard>
 
-          <StatCard elevation={0}>
-            <StatIconBadge bg="#16a34a">
-              <VerifiedUserRoundedIcon />
-            </StatIconBadge>
-            <Box>
-              <Typography variant="h5" sx={{ fontWeight: 700 }}>
-                {isLoading ? "—" : totalUsers}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Active accounts
-              </Typography>
-            </Box>
-          </StatCard>
+            <StatCard elevation={0}>
+              <StatIconBadge bg="#16a34a">
+                <VerifiedUserRoundedIcon />
+              </StatIconBadge>
+              <Box>
+                <Typography variant="h5" sx={{ fontWeight: 700 }}>
+                  {isLoading ? "—" : totalUsers}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Active accounts
+                </Typography>
+                <StatTrend positive sx={{ mt: 0.5 }}>
+                  <TrendingUpRoundedIcon sx={{ fontSize: 14 }} />
+                  100%
+                </StatTrend>
+              </Box>
+            </StatCard>
 
-          <StatCard elevation={0}>
-            <StatIconBadge bg="#f59e0b">
-              <PersonAddAltRoundedIcon />
-            </StatIconBadge>
-            <Box>
-              <Typography variant="h5" sx={{ fontWeight: 700 }}>
-                {isLoading ? "—" : Math.min(totalUsers, 5)}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                New this week
-              </Typography>
-            </Box>
-          </StatCard>
-        </StatGrid>
+            <StatCard elevation={0}>
+              <StatIconBadge bg="#d97706">
+                <PersonAddAltRoundedIcon />
+              </StatIconBadge>
+              <Box>
+                <Typography variant="h5" sx={{ fontWeight: 700 }}>
+                  {isLoading ? "—" : Math.min(totalUsers, 5)}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  New this week
+                </Typography>
+                <StatTrend positive sx={{ mt: 0.5 }}>
+                  <TrendingUpRoundedIcon sx={{ fontSize: 14 }} />
+                  This week
+                </StatTrend>
+              </Box>
+            </StatCard>
+          </StatGrid>
+        </Fade>
 
         <TableCard elevation={0}>
           <Box
