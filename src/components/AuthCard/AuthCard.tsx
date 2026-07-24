@@ -24,6 +24,12 @@ import { signInSchema, signUpSchema } from "../../validations/authSchema";
 import { useGoogleAuth, useSignIn, useSignUp } from "../../hooks/useSign";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import { useNavigate } from "react-router-dom";
+import {
+  ACCESS_TOKEN_COOKIE,
+  REFRESH_TOKEN_COOKIE,
+  ACCESS_TOKEN_COOKIE_OPTIONS,
+  REFRESH_TOKEN_COOKIE_OPTIONS,
+} from "../../constants/cookies";
 
 type AuthCardProps = {
   mode: "sign-in" | "sign-up";
@@ -81,7 +87,16 @@ export default function AuthCard({
           },
           {
             onSuccess: (data) => {
-              Cookies.set("accessToken", data.token);
+              Cookies.set(
+                ACCESS_TOKEN_COOKIE,
+                data.token,
+                ACCESS_TOKEN_COOKIE_OPTIONS,
+              );
+              Cookies.set(
+                REFRESH_TOKEN_COOKIE,
+                data.refresh,
+                REFRESH_TOKEN_COOKIE_OPTIONS,
+              );
               navigate("/dashboard");
             },
           },
@@ -97,7 +112,12 @@ export default function AuthCard({
 
     googleAuthMutation.mutate(credentialResponse.credential, {
       onSuccess: (data) => {
-        Cookies.set("accessToken", data.token);
+        Cookies.set(ACCESS_TOKEN_COOKIE, data.token, ACCESS_TOKEN_COOKIE_OPTIONS);
+        Cookies.set(
+          REFRESH_TOKEN_COOKIE,
+          data.refresh,
+          REFRESH_TOKEN_COOKIE_OPTIONS,
+        );
         navigate("/dashboard");
       },
       onError: (error) => {

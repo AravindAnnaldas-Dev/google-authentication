@@ -21,6 +21,10 @@ import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import Cookies from "js-cookie";
 import { useUsersList } from "../../hooks/useUsersList";
 import {
+  ACCESS_TOKEN_COOKIE,
+  REFRESH_TOKEN_COOKIE,
+} from "../../constants/cookies";
+import {
   PageWrapper,
   TopBar,
   ContentContainer,
@@ -47,7 +51,8 @@ export default function Dashboard({ onLogout }: DashboardProps) {
   const { data: users, isLoading, isError } = useUsersList();
 
   const handleLogout = () => {
-    Cookies.remove("accessToken");
+    Cookies.remove(ACCESS_TOKEN_COOKIE);
+    Cookies.remove(REFRESH_TOKEN_COOKIE);
     onLogout?.();
   };
 
