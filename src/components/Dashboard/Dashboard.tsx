@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Avatar,
   Box,
@@ -22,6 +24,8 @@ import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import TrendingUpRoundedIcon from "@mui/icons-material/TrendingUpRounded";
 import Cookies from "js-cookie";
 import { useUsersList } from "../../hooks/useUsersList";
+import { userLogout } from "../../api/auth";
+import LogoutDialog from "../LogoutDialog/LogoutDialog";
 import {
   ACCESS_TOKEN_COOKIE,
   REFRESH_TOKEN_COOKIE,
@@ -53,11 +57,27 @@ const getInitials = (name: string) =>
 
 export default function Dashboard({ onLogout }: DashboardProps) {
   const { data: users, isLoading, isError } = useUsersList();
+  const navigate = useNavigate();
+  const [isLogoutDialogOpen, setLogoutDialogOpen] = useState(false);
+  const [isLoggingOut, setLoggingOut] = useState(false);
 
-  const handleLogout = () => {
-    Cookies.remove(ACCESS_TOKEN_COOKIE);
-    Cookies.remove(REFRESH_TOKEN_COOKIE);
-    onLogout?.();
+  const openLogoutDialog = () => setLogoutDialogOpen(true);
+  const closeLogoutDialog = () => setLogoutDialogOpen(false);
+
+  const handleConfirmLogout = async () => {
+    setLoggingOut(true);
+    try {
+      await userLogout();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      Cookies.remove(ACCESS_TOKEN_COOKIE);
+      Cookies.remove(REFRESH_TOKEN_COOKIE);
+      setLoggingOut(false);
+      setLogoutDialogOpen(false);
+      onLogout?.();
+      navigate("/signin", { replace: true });
+    }
   };
 
   const totalUsers = users?.length ?? 0;
@@ -82,11 +102,18 @@ export default function Dashboard({ onLogout }: DashboardProps) {
         </Box>
 
         <Tooltip title="Log out">
-          <IconButton onClick={handleLogout} color="default">
+          <IconButton onClick={openLogoutDialog} color="default">
             <LogoutRoundedIcon />
           </IconButton>
         </Tooltip>
       </TopBar>
+
+      <LogoutDialog
+        open={isLogoutDialogOpen}
+        loading={isLoggingOut}
+        onCancel={closeLogoutDialog}
+        onConfirm={handleConfirmLogout}
+      />
 
       <ContentContainer>
         <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5 }}>

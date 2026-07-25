@@ -36,3 +36,8 @@ export const userGoogleAuth = async (idToken: string) => {
   const response = await app.post("/auth/google", { idToken });
   return response.data;
 };
+
+export const userLogout = async () => {
+  const response = await app.post("/logout");
+  return response.data;
+};
